@@ -3,7 +3,7 @@
 // SERVICE WORKER
 // ======================================
 
-const CACHE_NAME = "tara-aral-na-v4";
+const CACHE_NAME = "tara-aral-na-v6";
 
 const APP_FILES = [
   
@@ -37,7 +37,7 @@ const APP_FILES = [
   
 ];
 
-// Install
+// INSTALL
 
 self.addEventListener("install", event => {
   
@@ -52,29 +52,43 @@ self.addEventListener("install", event => {
   
 });
 
-// Activate
+// ACTIVATE
 
 self.addEventListener("activate", event => {
   
   event.waitUntil(
     
-    caches.keys().then(keys =>
+    caches.keys()
+    
+    .then(keys =>
+      
       Promise.all(
+        
         keys.map(key => {
+          
           if (key !== CACHE_NAME) {
+            
             return caches.delete(key);
+            
           }
+          
         })
+        
       )
-    ).then(() => self.clients.claim())
+      
+    )
+    
+    .then(() => self.clients.claim())
     
   );
   
 });
 
-// Fetch
+// FETCH
 
 self.addEventListener("fetch", event => {
+  
+  if (event.request.method !== "GET") return;
   
   event.respondWith(
     
@@ -82,14 +96,12 @@ self.addEventListener("fetch", event => {
     
     .then(response => {
       
-      if (
-        event.request.method === "GET" &&
-        event.request.url.startsWith(self.location.origin)
-      ) {
+      if (event.request.url.startsWith(self.location.origin)) {
         
         const copy = response.clone();
         
         caches.open(CACHE_NAME)
+          
           .then(cache => cache.put(event.request, copy));
         
       }

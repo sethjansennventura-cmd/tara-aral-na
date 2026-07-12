@@ -22,6 +22,23 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 </head>
 
 <body class="login-page">
+    
+    <!-- Splash Screen -->
+<div id="splashScreen">
+
+    <div class="splash-content">
+
+        <img src="icon-512.png" alt="Logo">
+
+        <h1>Tara Aral Na!</h1>
+
+        <p>Learn. Share. Succeed.</p>
+
+        <small>Version 1.0.0 • Genesis</small>
+
+    </div>
+
+</div>
 
 <div class="background">
 
@@ -159,6 +176,22 @@ function togglePassword(){
     }
 
 }
+
+</script>
+
+<script>
+
+window.addEventListener("load", function(){
+
+    setTimeout(function(){
+
+        document
+        .getElementById("splashScreen")
+        .classList.add("hide");
+
+    }, 3000);
+
+});
 
 </script>
 
