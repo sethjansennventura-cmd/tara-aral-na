@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Reviewer Subjects</title>
+
+<link rel="stylesheet"
+href="css/style.css">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4f46e5">
+
+</head>
+
+<body>
+
+<header>
+
+<h2 id="reviewerDateTitle"></h2>
+
+</header>
+
+<main>
+
+<h3>Select Subject</h3>
+
+<div class="subject-card"
+onclick="openReviewerSubject('Values')">
+
+<h3>📖 Values</h3>
+
+</div>
+
+<div class="subject-card"
+onclick="openReviewerSubject('Araling Panlipunan')">
+
+<h3>🌍 Araling Panlipunan</h3>
+
+</div>
+
+<div class="subject-card"
+onclick="openReviewerSubject('Mathematics')">
+
+<h3>➗ Mathematics</h3>
+
+</div>
+
+<div class="subject-card"
+onclick="openReviewerSubject('ICT')">
+
+<h3>💻 ICT</h3>
+
+</div>
+
+<div class="subject-card"
+onclick="openReviewerSubject('Filipino')">
+
+<h3>🇵🇭 Filipino</h3>
+
+</div>
+
+<div class="subject-card"
+onclick="openReviewerSubject('MAPEH')">
+
+<h3>🎵 MAPEH</h3>
+
+</div>
+
+<div class="subject-card"
+onclick="openReviewerSubject('English')">
+
+<h3>📘 English</h3>
+
+</div>
+
+<div class="subject-card"
+onclick="openReviewerSubject('Science')">
+
+<h3>🔬 Science</h3>
+
+</div>
+
+</main>
+
+<script src="js/storage.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/pull-refresh.js"></script>
+<script src="js/dark-mode.js"></script>
+
+<div id="toastContainer"></div>
+
+<script>
+
+if ("serviceWorker" in navigator) {
+
+window.addEventListener("load", function () {
+
+navigator.serviceWorker.register("service-worker.js")
+
+.then(function () {
+
+console.log("Service Worker registered.");
+
+})
+
+.catch(function (error) {
+
+console.log("Service Worker failed:", error);
+
+});
+
+});
+
+}
+
+</script>
+
+<script>
+
+const date =
+localStorage.getItem("selectedReviewerDate");
+
+document.getElementById("reviewerDateTitle").innerHTML =
+"📚 " + date;
+
+function openReviewerSubject(subject){
+
+    window.location.href =
+    "reviewer-subject.html?subject=" +
+    encodeURIComponent(subject);
+
+}
+
+</script>
+
+</body>
+
+</html>

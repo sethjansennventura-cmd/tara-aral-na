@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+
+<title>File Viewer</title>
+
+<link rel="stylesheet"
+href="css/style.css">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4f46e5">
+
+<style>
+
+html,
+body{
+
+margin:0;
+padding:0;
+height:100%;
+background:#111;
+overflow:hidden;
+
+}
+
+header{
+
+height:60px;
+display:flex;
+align-items:center;
+gap:15px;
+padding:0 15px;
+background:#1d1d1d;
+color:#fff;
+box-sizing:border-box;
+
+}
+
+header button{
+
+padding:10px 16px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+
+}
+
+#viewer{
+
+width:100%;
+height:calc(100vh - 60px);
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+background:#000;
+position:relative;
+
+}
+
+.loading{
+
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:20px;
+color:#fff;
+
+}
+
+.spinner{
+
+width:42px;
+height:42px;
+border:5px solid rgba(255,255,255,.25);
+border-top-color:#fff;
+border-radius:50%;
+animation:spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+#error{
+
+text-align:center;
+color:#fff;
+padding:20px;
+
+}
+
+#error h2{
+
+margin-bottom:10px;
+
+}
+
+#imageContainer{
+
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+touch-action:none;
+
+}
+
+#image{
+
+max-width:100%;
+max-height:100%;
+transform-origin:center center;
+user-select:none;
+-webkit-user-drag:none;
+touch-action:none;
+
+}
+
+video,
+audio,
+iframe{
+
+width:100%;
+height:100%;
+border:none;
+background:#000;
+
+}
+
+audio{
+
+height:80px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<button onclick="history.back()">
+
+⬅ Back
+
+</button>
+
+<h2>📄 File Viewer</h2>
+
+</header>
+
+<div id="viewer">
+
+<div class="loading">
+
+<div class="spinner"></div>
+
+<p>Loading...</p>
+
+</div>
+
+</div>
+<script src="js/offline.js"></script>
+<script src="js/dark-mode.js"></script>
+<script>
+
+(async function(){
+
+const params = new URLSearchParams(location.search);
+
+const url = params.get("url");
+
+const type = params.get("type");
+
+const name = params.get("name") || "";
+
+const viewer = document.getElementById("viewer");
+
+const fileUrl = await getFileUrl();
+
+if (!fileUrl) {
+
+    showError(
+        "This file isn't available offline yet. Connect to the internet and open it once."
+    );
+
+    return;
+
+}
+
+const lowerName = name.toLowerCase();
+
+const extension =
+    lowerName.includes(".")
+    ? lowerName.split(".").pop()
+    : "";
+    
+const isImage = [
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "webp",
+    "bmp"
+].includes(extension);
+
+const isVideo = [
+    "mp4",
+    "webm",
+    "mov",
+    "mkv",
+    "avi",
+    "3gp"
+].includes(extension);
+
+const isAudio = [
+    "mp3",
+    "wav",
+    "ogg",
+    "m4a",
+    "aac",
+    "flac"
+].includes(extension);
+
+const isPDF =
+    extension === "pdf";
+
+function showError(message){
+
+    viewer.innerHTML = `
+    <div id="error">
+
+        <h2>❌ Unable to open file</h2>
+
+        <p>${message}</p>
+
+    </div>
+    `;
+
+}
+
+async function getFileUrl() {
+
+    const cached = await getCachedFile(url);
+
+    if (cached) {
+
+        return cached;
+
+    }
+
+    if (navigator.onLine) {
+
+        await cacheFile(url);
+
+        const saved = await getCachedFile(url);
+
+        return saved || url;
+
+    }
+
+    return null;
+
+}
+
+if(!url){
+
+    showError("Missing file URL.");
+
+}
+
+else if(type === "Image" || isImage){
+
+    viewer.innerHTML = `
+
+    <div id="imageContainer">
+
+        <img
+        id="image"
+        src="${fileUrl}"
+        draggable="false">
+
+    </div>
+
+    `;
+
+    const img = document.getElementById("image");
+
+    let scale = 1;
+
+    let x = 0;
+
+    let y = 0;
+
+    let startX = 0;
+
+    let startY = 0;
+
+    let dragging = false;
+
+    function update(){
+
+        img.style.transform =
+        `translate(${x}px,${y}px) scale(${scale})`;
+
+    }
+
+    img.onload = function(){
+
+    scale = 1;
+
+    x = 0;
+
+    y = 0;
+
+    update();
+
+};
+
+    img.onerror = function(){
+
+        showError("Image failed to load.");
+
+    };
+
+    img.addEventListener("dblclick",function(){
+
+        if(scale === 1){
+
+            scale = 2;
+
+        }
+
+        else{
+
+            scale = 1;
+
+            x = 0;
+
+            y = 0;
+
+        }
+
+        update();
+
+    });
+
+    img.addEventListener("wheel",function(e){
+
+        e.preventDefault();
+
+        scale += e.deltaY < 0 ? .2 : -.2;
+
+        scale = Math.max(1,Math.min(scale,5));
+
+        update();
+
+    });
+
+    img.addEventListener("mousedown",function(e){
+
+        if(scale <= 1) return;
+
+        dragging = true;
+
+        startX = e.clientX - x;
+
+        startY = e.clientY - y;
+
+    });
+
+    window.addEventListener("mousemove",function(e){
+
+        if(!dragging) return;
+
+        x = e.clientX - startX;
+
+        y = e.clientY - startY;
+
+        update();
+
+    });
+
+    window.addEventListener("mouseup",function(){
+
+        dragging = false;
+
+    });
+
+}
+
+else if(type === "Video" || isVideo){
+
+    viewer.innerHTML = `
+
+    <video controls autoplay>
+
+        <source src="${fileUrl}">
+
+    </video>
+
+    `;
+
+}
+
+else if(type === "Audio" || isAudio){
+
+    viewer.innerHTML = `
+
+    <audio controls autoplay>
+
+        <source src="${fileUrl}">
+
+    </audio>
+
+    `;
+
+}
+
+else if (type === "PDF" || isPDF) {
+    
+    viewer.innerHTML = `
+
+    <iframe
+    src="${fileUrl}">
+
+    </iframe>
+
+    `;
+    
+}
+
+else {
+    
+    viewer.innerHTML = `
+
+    <div id="error">
+
+        <h2>📄 Unsupported Preview</h2>
+
+        <p>This file can't be previewed in your browser.</p>
+
+        <br>
+
+        <button onclick="window.open('${url}','_blank')">
+
+            ⬇ Download / Open
+
+        </button>
+
+    </div>
+
+    `;
+    
+}
+
+})();
+
+</script>
+
+</body>
+
+</html>
