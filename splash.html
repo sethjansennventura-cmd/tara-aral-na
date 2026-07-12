@@ -1,117 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tara Aral Na!</title>
+<title>Tara Aral Na! | Loading...</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
 body{
 
-height:100vh;
+    width:100vw;
+    height:100vh;
 
-display:flex;
-justify-content:center;
-align-items:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-background:linear-gradient(135deg,#2563EB,#22C55E);
+    overflow:hidden;
 
-overflow:hidden;
+    background:linear-gradient(
+        135deg,
+        #2563EB 0%,
+        #1D4ED8 35%,
+        #0EA5E9 70%,
+        #22C55E 100%
+    );
+
+    animation:fadeIn .8s ease;
 
 }
 
 .container{
 
-text-align:center;
-color:white;
+    text-align:center;
+    color:#fff;
 
-animation:fadeIn 1s;
+    padding:20px;
 
 }
 
 .logo{
 
-width:140px;
-height:140px;
+    width:220px;
+    height:220px;
 
-border-radius:28px;
+    margin:auto;
 
-background:white;
+    border-radius:42px;
 
-display:flex;
-justify-content:center;
-align-items:center;
+    overflow:hidden;
 
-margin:auto;
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.28);
 
-box-shadow:0 15px 35px rgba(0,0,0,.25);
-
-animation:pop .8s;
+    animation:
+        pop .8s ease,
+        float 3s ease-in-out infinite;
 
 }
 
 .logo img{
 
-width:100px;
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
 
 }
 
 h1{
 
-margin-top:25px;
+    margin-top:30px;
 
-font-size:34px;
+    font-size:52px;
 
-font-weight:700;
+    font-weight:700;
+
+    letter-spacing:-1px;
 
 }
 
 p{
 
-margin-top:8px;
+    margin-top:12px;
 
-font-size:18px;
+    font-size:22px;
 
-opacity:.95;
+    opacity:.95;
 
 }
 
 small{
 
-display:block;
+    display:block;
 
-margin-top:45px;
+    margin-top:55px;
 
-font-size:13px;
+    font-size:17px;
 
-opacity:.8;
+    opacity:.75;
 
 }
+
+/* Loading Dots */
+
+.loading{
+
+    margin-top:25px;
+
+}
+
+.loading span{
+
+    width:10px;
+    height:10px;
+
+    margin:0 5px;
+
+    display:inline-block;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    animation:bounce 1.2s infinite;
+
+}
+
+.loading span:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.loading span:nth-child(3){
+
+    animation-delay:.4s;
+
+}
+
+/* Animations */
 
 @keyframes fadeIn{
 
 from{
-
 opacity:0;
-
 }
 
 to{
-
 opacity:1;
-
 }
 
 }
@@ -119,18 +170,55 @@ opacity:1;
 @keyframes pop{
 
 0%{
-
-transform:scale(.5);
-
 opacity:0;
-
+transform:scale(.8);
 }
 
 100%{
-
-transform:scale(1);
-
 opacity:1;
+transform:scale(1);
+}
+
+}
+
+@keyframes float{
+
+0%,100%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-10px);
+}
+
+}
+
+@keyframes bounce{
+
+0%,80%,100%{
+transform:scale(.5);
+opacity:.4;
+}
+
+40%{
+transform:scale(1);
+opacity:1;
+}
+
+}
+
+.fade-out{
+
+animation:fadeOut .7s forwards;
+
+}
+
+@keyframes fadeOut{
+
+to{
+
+opacity:0;
+transform:scale(1.03);
 
 }
 
@@ -142,23 +230,23 @@ opacity:1;
 
 <body>
 
-<div class="container">
+<div class="container" id="container">
 
-<div class="logo">
+    <div class="logo">
+        <img src="icon-512.png" alt="Tara Aral Na!">
+    </div>
 
-<img src="icon-512.png">
+    <h1>Tara Aral Na!</h1>
 
-</div>
+    <p>Learn. Share. Succeed.</p>
 
-<h1>Tara Aral Na!</h1>
+    <small>Version 1.0.0 • Genesis</small>
 
-<p>Learn. Share. Succeed.</p>
-
-<small>
-
-Version 1.0.0 • Genesis
-
-</small>
+    <div class="loading">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
 
 </div>
 
@@ -166,11 +254,19 @@ Version 1.0.0 • Genesis
 
 setTimeout(()=>{
 
-window.location.href="index.html";
+    document.getElementById("container")
+    .classList.add("fade-out");
 
-},2500);
+},2200);
+
+setTimeout(()=>{
+
+    window.location.href="index.html";
+
+},2900);
 
 </script>
 
 </body>
+
 </html>
