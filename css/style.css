@@ -2354,199 +2354,223 @@ margin-bottom:20px;
    SPLASH SCREEN
 ====================================== */
 
-#splashScreen{
+#splash{
 
-    position:fixed;
+position:fixed;
 
-    top:0;
-    left:0;
+top:0;
+left:0;
 
-    width:100vw;
-    height:100vh;
+width:100%;
+height:100vh;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 
-    background:linear-gradient(
-        135deg,
-        #2563EB 0%,
-        #1D4ED8 35%,
-        #0EA5E9 70%,
-        #22C55E 100%
-    );
+overflow:hidden;
 
-    z-index:999999;
+background:linear-gradient(
+135deg,
+#2563EB 0%,
+#1D4ED8 35%,
+#0EA5E9 70%,
+#22C55E 100%
+);
 
-    opacity:1;
-    visibility:visible;
+z-index:999999;
 
-    transition:
-        opacity .8s ease,
-        visibility .8s ease;
+animation:splashFadeIn .8s ease;
+
+transition:opacity .7s ease;
 
 }
 
-#splashScreen.hide{
+#splash.hidden{
 
-    opacity:0;
-    visibility:hidden;
+opacity:0;
+pointer-events:none;
 
 }
 
 .splash-content{
 
-    text-align:center;
+text-align:center;
+color:#fff;
 
-    color:#fff;
-
-    padding:20px;
-
-    animation:splashPop .8s ease;
+padding:20px;
 
 }
 
-.splash-content img{
+.splash-logo{
 
-    width:220px;
-    height:220px;
+width:220px;
+height:220px;
 
-    border-radius:40px;
+margin:auto;
 
-    box-shadow:
-        0 25px 60px rgba(0,0,0,.28);
+border-radius:42px;
 
-    animation:float 3s ease-in-out infinite;
+overflow:hidden;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:rgba(255,255,255,.12);
+
+font-size:120px;
+
+box-shadow:
+0 25px 60px rgba(0,0,0,.28);
+
+animation:
+splashPop .8s ease,
+splashFloat 3s ease-in-out infinite;
 
 }
 
 .splash-content h1{
 
-    margin-top:28px;
+margin-top:30px;
 
-    font-size:56px;
+font-size:52px;
 
-    font-weight:700;
+font-weight:700;
 
-    letter-spacing:-1px;
+letter-spacing:-1px;
+
+color:#fff;
 
 }
 
 .splash-content p{
 
-    margin-top:12px;
+margin-top:12px;
 
-    font-size:24px;
+font-size:22px;
 
-    opacity:.92;
+opacity:.95;
 
-}
-
-.splash-content small{
-
-    display:block;
-
-    margin-top:50px;
-
-    font-size:18px;
-
-    opacity:.75;
+color:#fff;
 
 }
 
-/* ==========================
-   LOADING DOTS
-========================== */
+.splash-version{
 
-.loading-dots{
+display:block;
 
-    margin-top:25px;
+margin-top:55px;
 
-}
+font-size:17px;
 
-.loading-dots span{
+opacity:.75;
 
-    display:inline-block;
-
-    width:10px;
-    height:10px;
-
-    margin:0 5px;
-
-    border-radius:50%;
-
-    background:#fff;
-
-    animation:bounce 1.2s infinite ease-in-out;
+color:#fff;
 
 }
 
-.loading-dots span:nth-child(2){
+.loader{
 
-    animation-delay:.2s;
+margin-top:25px;
+
+display:flex;
+
+justify-content:center;
+
+gap:10px;
 
 }
 
-.loading-dots span:nth-child(3){
+.loader span{
 
-    animation-delay:.4s;
+width:10px;
+height:10px;
+
+border-radius:50%;
+
+background:#fff;
+
+animation:splashBounce 1.2s infinite;
 
 }
 
-/* ==========================
-   ANIMATIONS
-========================== */
+.loader span:nth-child(2){
+
+animation-delay:.2s;
+
+}
+
+.loader span:nth-child(3){
+
+animation-delay:.4s;
+
+}
+
+@keyframes splashFadeIn{
+
+from{
+
+opacity:0;
+
+}
+
+to{
+
+opacity:1;
+
+}
+
+}
 
 @keyframes splashPop{
 
-    0%{
+0%{
 
-        opacity:0;
-        transform:scale(.85);
-
-    }
-
-    100%{
-
-        opacity:1;
-        transform:scale(1);
-
-    }
+opacity:0;
+transform:scale(.8);
 
 }
 
-@keyframes float{
+100%{
 
-    0%,100%{
-
-        transform:translateY(0);
-
-    }
-
-    50%{
-
-        transform:translateY(-12px);
-
-    }
+opacity:1;
+transform:scale(1);
 
 }
 
-@keyframes bounce{
+}
 
-    0%,80%,100%{
+@keyframes splashFloat{
 
-        transform:scale(.5);
+0%,100%{
 
-        opacity:.4;
+transform:translateY(0);
 
-    }
+}
 
-    40%{
+50%{
 
-        transform:scale(1);
+transform:translateY(-10px);
 
-        opacity:1;
+}
 
-    }
+}
+
+@keyframes splashBounce{
+
+0%,80%,100%{
+
+transform:scale(.5);
+opacity:.4;
+
+}
+
+40%{
+
+transform:scale(1);
+opacity:1;
+
+}
 
 }
