@@ -38,7 +38,7 @@ async function login() {
         
         setRole("teacher");
         
-    registerForPush();
+   // registerForPush();
         
         showToast(
             "Welcome!",
@@ -63,7 +63,7 @@ async function login() {
         
         setRole("student");
         
-    registerForPush();
+   // registerForPush();
         
         showToast(
             "Welcome, Student!",
