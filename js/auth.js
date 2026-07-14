@@ -20,7 +20,7 @@ if (
 // LOGIN
 // ----------------------
 
-function login() {
+async function login() {
     
     const code =
         document.getElementById("accessCode").value.trim();
@@ -30,9 +30,15 @@ function login() {
     
     message.innerHTML = "";
     
+    // ----------------------
+    // TEACHER
+    // ----------------------
+    
     if (code === "1122") {
         
         setRole("teacher");
+        
+        await registerForPush();
         
         showToast(
             "Welcome!",
@@ -49,9 +55,15 @@ function login() {
         
     }
     
+    // ----------------------
+    // STUDENT
+    // ----------------------
+    
     if (code === "0000") {
         
         setRole("student");
+        
+        await registerForPush();
         
         showToast(
             "Welcome, Student!",

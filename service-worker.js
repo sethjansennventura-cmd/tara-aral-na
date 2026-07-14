@@ -3,7 +3,7 @@
 // SERVICE WORKER
 // ======================================
 
-const CACHE_NAME = "tara-aral-na-v6";
+const CACHE_NAME = "tara-aral-na-v7";
 
 const APP_FILES = [
   
@@ -34,6 +34,7 @@ const APP_FILES = [
   "/js/offline.js",
   "/js/dark-mode.js",
   "/js/api/supabase-api.js"
+  "/js/firebase-config.js",
   
 ];
 
@@ -111,6 +112,64 @@ self.addEventListener("fetch", event => {
     })
     
     .catch(() => caches.match(event.request))
+    
+  );
+  
+});
+// ======================================
+// FIREBASE CLOUD MESSAGING
+// ======================================
+
+importScripts("https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging-compat.js");
+
+firebase.initializeApp({
+  
+  apiKey: "AIzaSyBYhrfiY1BLFTL_YinHasdS8uXOPqYg8Z8",
+  
+  authDomain: "tara-aral-na-cd7f0.firebaseapp.com",
+  
+  projectId: "tara-aral-na-cd7f0",
+  
+  storageBucket: "tara-aral-na-cd7f0.firebasestorage.app",
+  
+  messagingSenderId: "841710015251",
+  
+  appId: "1:841710015251:web:5e5d9fc63a94cd3e3940e6"
+  
+});
+
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+  
+  self.registration.showNotification(
+    
+    payload.notification.title,
+    
+    {
+      
+      body: payload.notification.body,
+      
+      icon: "/icon-192.png",
+      
+      badge: "/icon-192.png",
+      
+      data: payload.data
+      
+    }
+    
+  );
+  
+});
+
+self.addEventListener("notificationclick", (event) => {
+  
+  event.notification.close();
+  
+  event.waitUntil(
+    
+    clients.openWindow("/")
     
   );
   
