@@ -35,25 +35,27 @@ async function login() {
     // ----------------------
     
     if (code === "1122") {
+    
+    alert("Teacher login started");
+    
+    setRole("teacher");
+    
+    alert("Role saved");
+    
+   // await registerForPush();
+    
+    alert("Push registration finished");
+    
+    showToast("Welcome!", "success");
+    
+    setTimeout(function() {
         
-        setRole("teacher");
+        window.location.href = "dashboard.html";
         
-        await registerForPush();
-        
-        showToast(
-            "Welcome!",
-            "success"
-        );
-        
-        setTimeout(function() {
-            
-            window.location.href = "dashboard.html";
-            
-        }, 800);
-        
-        return;
-        
-    }
+    }, 800);
+    
+    return;
+}
     
     // ----------------------
     // STUDENT
@@ -63,7 +65,7 @@ async function login() {
         
         setRole("student");
         
-        await registerForPush();
+       // await registerForPush();
         
         showToast(
             "Welcome, Student!",
