@@ -3,7 +3,7 @@
 // SERVICE WORKER
 // ======================================
 
-const CACHE_NAME = "tara-aral-na-v7";
+const CACHE_NAME = "tara-aral-na-v8";
 
 const APP_FILES = [
   
@@ -33,7 +33,7 @@ const APP_FILES = [
   "/js/recent-viewed.js",
   "/js/offline.js",
   "/js/dark-mode.js",
-  "/js/api/supabase-api.js"
+  "/js/api/supabase-api.js",
   "/js/firebase-config.js",
   
 ];
@@ -151,9 +151,8 @@ messaging.onBackgroundMessage((payload) => {
       
       body: payload.notification.body,
       
-      icon: "/icon-192.png",
-      
-      badge: "/icon-192.png",
+      icon: "./icon-192.png",
+  badge: "./icon-192.png",
       
       data: payload.data
       
@@ -169,7 +168,7 @@ self.addEventListener("notificationclick", (event) => {
   
   event.waitUntil(
     
-    clients.openWindow("/")
+    clients.openWindow("./")
     
   );
   
