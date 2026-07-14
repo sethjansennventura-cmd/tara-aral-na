@@ -31,7 +31,12 @@ async function registerForPush() {
   try {
     
     // Ask permission
-    const permission = await Notification.requestPermission();
+    if (!("Notification" in window)) {
+    alert("Notifications are not supported in this browser.");
+    return;
+}
+
+const permission = await window.Notification.requestPermission();
     
     if (permission !== "granted") {
       
