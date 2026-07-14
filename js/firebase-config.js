@@ -93,25 +93,26 @@ async function registerForPush() {
       
     );
     
-    if (response.ok) {
-      
-      console.log("Device token saved.");
-      
-    } else {
-      
-      console.error(
-        "Failed to save token:",
-        await response.text()
-      );
-      
-    }
+    alert("Supabase status: " + response.status);
+
+const result = await response.text();
+
+alert("Supabase response: " + result);
+
+if (response.ok) {
+
+    alert("Device token saved.");
+
+} else {
+
+    alert("Failed to save token.");
+
+}
     
   } catch (err) {
     
-    console.error(
-      "Push registration failed:",
-      err
-    );
+    alert("Push registration failed:\n\n" + err.message);
+console.error(err);
     
   }
   
