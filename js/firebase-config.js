@@ -44,6 +44,8 @@ async function registerForPush() {
     // Wait for Service Worker
     const registration = await navigator.serviceWorker.ready;
     
+    alert("Service Worker ready");
+    
     // Get FCM Token
     const token = await messaging.getToken({
       
@@ -52,6 +54,8 @@ async function registerForPush() {
       serviceWorkerRegistration: registration
       
     });
+    
+    alert("Token: " + token);
     
     if (!token) {
       
