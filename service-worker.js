@@ -3,7 +3,7 @@
 // SERVICE WORKER
 // ======================================
 
-const CACHE_NAME = "tara-aral-na-v9";
+const CACHE_NAME = "tara-aral-na-v10";
 
 const APP_FILES = [
   

@@ -340,7 +340,11 @@ async function init() {
 
     alert("About to register push");
 
-    await registerForPush();
+    const registration = await navigator.serviceWorker.ready;
+
+alert("Service Worker is READY!");
+
+await registerForPush();
 
     alert("registerForPush finished");
 

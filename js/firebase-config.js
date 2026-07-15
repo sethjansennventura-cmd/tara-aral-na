@@ -62,25 +62,15 @@ async function registerForPush() {
 
         alert("5");
 
-        const token =
-            await messaging.getToken({
+        alert("Before getToken");
 
-                vapidKey:
-                "ChjSF9xcSwwoh0MEhDSrC7zJ5G5o6LGZHUDDHy6_jSA",
+const token = await messaging.getToken({
 
-                serviceWorkerRegistration:
-                registration
+    vapidKey:
+    "ChjSF9xcSwwoh0MEhDSrC7zJ5G5o6LGZHUDDHy6_jSA",
 
-            });
+    serviceWorkerRegistration: registration
 
-        alert("6");
+});
 
-        console.log(token);
-
-    } catch (err) {
-
-        alert(err.message);
-
-    }
-
-}
+alert("After getToken");
