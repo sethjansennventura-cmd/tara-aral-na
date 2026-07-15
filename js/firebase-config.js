@@ -3,19 +3,19 @@
 // ======================================
 
 const firebaseConfig = {
-  
-  apiKey: "AIzaSyBYhrfiY1BLFTL_YinHasdS8uXOPqYg8Z8",
-  
-  authDomain: "tara-aral-na-cd7f0.firebaseapp.com",
-  
-  projectId: "tara-aral-na-cd7f0",
-  
-  storageBucket: "tara-aral-na-cd7f0.firebasestorage.app",
-  
-  messagingSenderId: "841710015251",
-  
-  appId: "1:841710015251:web:5e5d9fc63a94cd3e3940e6"
-  
+
+    apiKey: "AIzaSyBYhrfiY1BLFTL_YinHasdS8uXOPqYg8Z8",
+
+    authDomain: "tara-aral-na-cd7f0.firebaseapp.com",
+
+    projectId: "tara-aral-na-cd7f0",
+
+    storageBucket: "tara-aral-na-cd7f0.firebasestorage.app",
+
+    messagingSenderId: "841710015251",
+
+    appId: "1:841710015251:web:5e5d9fc63a94cd3e3940e6"
+
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -64,13 +64,25 @@ async function registerForPush() {
 
         alert("Before getToken");
 
-const token = await messaging.getToken({
+        const token = await messaging.getToken({
 
-    vapidKey:
-    "ChjSF9xcSwwoh0MEhDSrC7zJ5G5o6LGZHUDDHy6_jSA",
+            vapidKey:
+            "ChjSF9xcSwwoh0MEhDSrC7zJ5G5o6LGZHUDDHy6_jSA",
 
-    serviceWorkerRegistration: registration
+            serviceWorkerRegistration: registration
 
-});
+        });
 
-alert("After getToken");
+        alert("After getToken");
+
+        console.log("FCM Token:", token);
+
+    } catch (err) {
+
+        alert("ERROR:\n\n" + err.message);
+
+        console.error(err);
+
+    }
+
+}
