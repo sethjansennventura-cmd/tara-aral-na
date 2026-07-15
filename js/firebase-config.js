@@ -75,7 +75,13 @@ async function registerForPush() {
 
         alert("After getToken");
 
-        console.log("FCM Token:", token);
+        alert(token);
+
+await insertData("device_tokens", {
+    token: token
+});
+
+alert("Token saved!");
 
     } catch (err) {
 
