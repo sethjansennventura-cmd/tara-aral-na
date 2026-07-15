@@ -67,7 +67,7 @@ async function registerForPush() {
         const token = await messaging.getToken({
 
             vapidKey:
-            "ChjSF9xcSwwoh0MEhDSrC7zJ5G5o6LGZHUDDHy6_jSA",
+            "BCdXfKqT58ND6UoSY6UXAiNqfOp3BlYCLoqsD9oWC3IjiIcrT27JePdkWHWe17AYT7o_KUsztimpUh6adviylrM",
 
             serviceWorkerRegistration: registration
 
