@@ -1,41 +1,64 @@
-// Follow this setup guide to integrate the Deno language server with your editor:
-// https://deno.land/manual/getting_started/setup_your_environment
-// This enables autocomplete, go to definition, etc.
+import { JWT } from "npm:google-auth-library@9";
 
-// Setup type definitions for built-in Supabase Runtime APIs
-import "@supabase/functions-js/edge-runtime.d.ts";
-import { withSupabase } from "@supabase/server";
+Deno.serve(async (req) => {
+  try {
+    const { token, title, body } = await req.json();
 
-console.log("Hello from Functions!");
-
-// This endpoint uses 'publishable' | 'secret' access, apiKey is required.
-// Use publishable for Client-facing, key-validated endpoints
-// Use secret for Server-to-server, internal calls
-export default {
-  fetch: withSupabase({ auth: ["publishable", "secret"] }, async (req, ctx) => {
-    // Called by another service with a secret key
-    // ctx.supabaseAdmin bypasses RLS — use for privileged operations
-    /*
-    if (ctx.authMode === "secret") {
-      const { user_id } = await req.json();
-      const { data } = await ctx.supabaseAdmin.auth.admin.getUserById(user_id);
-
-      return Response.json({
-        email: data?.user?.email,
-      });
-    }
-    */
-
-    const { name } = await req.json();
-
-    return Response.json({
-      message: `Hello ${name}!`,
+    const client = new JWT({
+      email: Deno.env.get("FIREBASE_CLIENT_EMAIL"),
+      key: Deno.env
+        .get("FIREBASE_PRIVATE_KEY")
+        ?.replace(/\\n/g, "\n"),
+      scopes: [
+        "https://www.googleapis.com/auth/firebase.messaging",
+      ],
     });
-  }),
-};
 
-/* To invoke locally:
+    const auth = await client.authorize();
 
+    const projectId = Deno.env.get("FIREBASE_PROJECT_ID");
+
+    const response = await fetch(
+      `https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${auth.access_token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: {
+            token,
+            notification: {
+              title,
+              body,
+            },
+          },
+        }),
+      },
+    );
+
+    const data = await response.json();
+
+    return new Response(JSON.stringify(data), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    return new Response(
+      JSON.stringify({
+        error: err.message,
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }
+});
   1. Run `supabase start` (see: https://supabase.com/docs/reference/cli/supabase-start)
   2. Make an HTTP request:
 
