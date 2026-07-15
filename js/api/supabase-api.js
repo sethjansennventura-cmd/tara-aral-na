@@ -132,40 +132,47 @@ async function getData(table) {
 }
 
 
-async function insertData(table,data){
-
-    try{
-
+async function insertData(table, data) {
+    
+    try {
+        
         const response = await fetch(
-
+            
             SUPABASE_URL +
             "/rest/v1/" +
             table,
-
+            
             {
-                method:"POST",
-
-                headers:{
+                method: "POST",
+                
+                headers: {
                     ...HEADERS,
-                    Prefer:"return=representation"
+                    Prefer: "return=representation"
                 },
-
-                body:JSON.stringify(data)
-
+                
+                body: JSON.stringify(data)
+                
             }
-
+            
         );
-
+        
+        const result = await response.text();
+        
+        alert(
+            "Status: " + response.status +
+            "\n\n" + result
+        );
+        
         return response.ok;
-
-    }catch(error){
-
-        showToast(error.message, "error");
-
+        
+    } catch (error) {
+        
+        alert(error.message);
+        
         return false;
-
+        
     }
-
+    
 }
 
 
