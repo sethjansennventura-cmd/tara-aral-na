@@ -77,9 +77,13 @@ async function registerForPush() {
 
         alert(token);
 
-await insertData("device_tokens", {
+alert("About to insert...");
+
+const success = await insertData("device_tokens", {
     token: token
 });
+
+alert("Insert returned: " + success);
 
 alert("Token saved!");
 
