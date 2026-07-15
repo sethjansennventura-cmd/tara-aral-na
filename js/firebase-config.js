@@ -27,98 +27,60 @@ const messaging = firebase.messaging();
 // ======================================
 
 async function registerForPush() {
-  
-  try {
-    
-    if (!("Notification" in window)) {
-      
-      console.log("Notifications are not supported.");
-      
-      return;
-      
+
+    try {
+
+        alert("1");
+
+        if (!("Notification" in window)) {
+
+            alert("Notifications not supported");
+
+            return;
+
+        }
+
+        alert("2");
+
+        const permission =
+            await Notification.requestPermission();
+
+        alert("3");
+
+        if (permission !== "granted") {
+
+            alert("Permission denied");
+
+            return;
+
+        }
+
+        alert("4");
+
+        const registration =
+            await navigator.serviceWorker.ready;
+
+        alert("5");
+
+        const token =
+            await messaging.getToken({
+
+                vapidKey:
+                "ChjSF9xcSwwoh0MEhDSrC7zJ5G5o6LGZHUDDHy6_jSA",
+
+                serviceWorkerRegistration:
+                registration
+
+            });
+
+        alert("6");
+
+        console.log(token);
+
+    } catch (err) {
+
+        alert(err.message);
+
     }
-    
-    const permission =
-      await window.Notification.requestPermission();
-    
-    if (permission !== "granted") {
-      
-      console.log("Notification permission denied.");
-      
-      return;
-      
-    }
-    
-    const registration =
-      await navigator.serviceWorker.ready;
-    
-    const token =
-      await messaging.getToken({
-        
-        vapidKey: "ChjSF9xcSwwoh0MEhDSrC7zJ5G5o6LGZHUDDHy6_jSA",
-        
-        serviceWorkerRegistration: registration
-        
-      });
-    
-    if (!token) {
-      
-      console.log("No FCM token received.");
-      
-      return;
-      
-    }
-    
-    console.log("FCM Token:", token);
-    
-    const response = await fetch(
-      
-      SUPABASE_URL + "/rest/v1/device_tokens",
-      
-      {
-        
-        method: "POST",
-        
-        headers: {
-          
-          ...HEADERS,
-          
-          Prefer: "resolution=merge-duplicates"
-          
-        },
-        
-        body: JSON.stringify({
-          
-          role: getRole(),
-          
-          fcm_token: token
-          
-        })
-        
-      }
-      
-    );
-    
-    if (response.ok) {
-      
-      console.log("Device token saved.");
-      
-    } else {
-      
-      console.error(
-        "Failed to save token:",
-        await response.text()
-      );
-      
-    }
-    
-  } catch (err) {
-    
-    console.error(
-      "Push registration failed:",
-      err
-    );
-    
-  }
-  
+
 }
