@@ -134,44 +134,32 @@ async function getData(table) {
 
 async function insertData(table, data) {
     
-    try {
+    const response = await fetch(
         
-        const response = await fetch(
+        SUPABASE_URL +
+        "/rest/v1/" +
+        table,
+        
+        {
+            method: "POST",
             
-            SUPABASE_URL +
-            "/rest/v1/" +
-            table,
+            headers: {
+                ...HEADERS,
+                Prefer: "return=representation"
+            },
             
-            {
-                method: "POST",
-                
-                headers: {
-                    ...HEADERS,
-                    Prefer: "return=representation"
-                },
-                
-                body: JSON.stringify(data)
-                
-            }
+            body: JSON.stringify(data)
             
-        );
+        }
         
-        const result = await response.text();
-        
-        alert(
-            "Status: " + response.status +
-            "\n\n" + result
-        );
-        
-        return response.ok;
-        
-    } catch (error) {
-        
-        alert(error.message);
-        
-        return false;
-        
-    }
+    );
+    
+    const text = await response.text();
+    
+    alert("Status: " + response.status);
+    alert(text);
+    
+    return response.ok;
     
 }
 
